@@ -83,6 +83,7 @@
         </div>
       </b-col>
     </b-row>
+    {{response.name1}}
   </div>
 </template>
 <script>
@@ -90,22 +91,22 @@ let usernameJson = require("~/assets/database/username.json");
 import Vue from "vue";
 import Vuelidate from "vuelidate";
 import { required } from "vuelidate/lib/validators";
+import { copyFile } from "fs";
 Vue.use(Vuelidate);
 var fs = require("fs");
 export default {
-  // mounted() {
-  //   console.log(
-  //     this.$axios.$post("/api/xxx", {
-  //       username: "phang"
-  //     })
-  //   );
-  // },
+  async mounted() {
+    const res = await this.$axios.$get("/api/register");
+    console.log(res);
+    this.response = res;
+  },
   data() {
     return {
       username: "",
       password: "",
       conditionTerm: false,
-      usernameJson: usernameJson
+      usernameJson: usernameJson,
+      response: []
     };
   },
   validations: {
@@ -126,11 +127,17 @@ export default {
     doSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        // this.$router.push({ name: "login" });
         this.usernameJson.push({
           username: this.username,
           password: this.password
         });
+        console.log(
+          this.$axios.$post("/api/register", {
+            username: this.username,
+            password: this.password
+          })
+        );
+        this.$router.push({ name: "login" });
       }
     }
   }

@@ -93,6 +93,13 @@ import { required } from "vuelidate/lib/validators";
 Vue.use(Vuelidate);
 var fs = require("fs");
 export default {
+  // mounted() {
+  //   console.log(
+  //     this.$axios.$post("/api/xxx", {
+  //       username: "phang"
+  //     })
+  //   );
+  // },
   data() {
     return {
       username: "",
@@ -123,7 +130,7 @@ export default {
         this.usernameJson.push({
           username: this.username,
           password: this.password
-        });   
+        });
       }
     }
   }

@@ -1,10 +1,27 @@
 <template>
   <div class="all">
+    <!-- <b-container> -->
     <h1 class="header" v-if="this.allowDisplay">Your menu is {{ menu }}</h1>
     <h1 class="header" v-else>Your menu is</h1>
     <br />
     <span class="after-text">{{ afterText }}</span>
-    <b-table :items="items" :fields="fields" caption-top></b-table>
+    <!-- <b-table :items="items" :fields="fields" caption-top></b-table> -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Ingredients</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody v-if="items && items.length > 0 ">
+        <tr v-for="(item, index) in items" :key="index">
+          <td>{{item.Ingredients}}</td>
+          <td>
+            <b-button @click="deleteIngredients(index)" variant="danger">Delete</b-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <div v-if="showAddMenu">
       <label class="sr-only" for="input-menu">Add Menu</label>
       <b-input
@@ -14,9 +31,7 @@
         class="mb-2 mr-sm-2 mb-sm-0"
         placeholder="Name of Menu"
       ></b-input>
-      <b-button id="menu-button" variant="danger" @click="appendMenu()"
-        >Add menu</b-button
-      >
+      <b-button id="menu-button" variant="danger" @click="appendMenu()">Add menu</b-button>
     </div>
 
     <br />
@@ -41,9 +56,8 @@
       id="ingre-button"
       variant="primary"
       @click="appendIngredient()"
-      >Add ingredient</b-button
-    >
-    {{ resultProduct }}
+    >Add ingredient</b-button>
+    <!-- </b-container> -->
   </div>
 </template>
 
@@ -61,12 +75,12 @@ export default {
       showAddMenu: true
     };
   },
-  async asyncData({ $axios }) {
-    let result = await $axios.post("/api/login", { username: "phang" });
-    return {
-      result
-    };
-  },
+  // async asyncData({ $axios }) {
+  //   let result = await $axios.post("/api/login", { username: "phang" });
+  //   return {
+  //     result
+  //   };
+  // },
   methods: {
     appendMenu() {
       if (this.menu) {
@@ -79,11 +93,21 @@ export default {
     },
     appendIngredient() {
       this.afterText = "";
-      this.items.push({ Ingredients: this.toBeAdded });
-      this.toBeAdded = "";
       if (this.items.length == 10) {
         this.afterText = "You can not add more ingredients";
+      } else {
+        if (
+          this.items.findIndex(item => item.Ingredients == this.toBeAdded) == -1
+        ) {
+          this.items.push({ Ingredients: this.toBeAdded });
+        } else {
+          this.afterText = "This ingredient is already added";
+        }
       }
+      this.toBeAdded = "";
+    },
+    deleteIngredients(index) {
+      this.items.splice(index, 1);
     }
   }
 };

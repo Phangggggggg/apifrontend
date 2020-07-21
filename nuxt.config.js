@@ -3,7 +3,7 @@ export default {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  mode: "universal",
+  mode: "spa",
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
@@ -50,6 +50,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
+    "@nuxtjs/proxy",
     [
       "bootstrap-vue/nuxt",
       {
@@ -61,9 +62,16 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: { credentials: true, proxy: true },
+  credentials: true,
+  axios: { proxy: true },
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+    "Access-Control-Allow-Headers":
+      "X-Requested-With, content-type, Authorization"
+  },
   proxy: {
-    "/api/": "http://localhost:8080"
+    "/api/": { target: "http://localhost:8080" }
   },
   /*
    ** Build configuration

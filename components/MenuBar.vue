@@ -9,20 +9,22 @@
       />
     </b-navbar-brand>
     <b-collapse id="nav-text-collapse" is-nav>
-      <b-navbar-nav href="/">
-        <a class="nav-item nav-link active" href="/">Home</a>
+      <b-navbar-nav>
+        <b-nav-item :to="{path: '/'}">Home</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav>
-        <a class="nav-item nav-link active" href="register">Register</a>
+        <b-nav-item :to="{path: '/register'}">Register</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav>
-        <a class="nav-item nav-link active" href="login">Login</a>
+        <b-navbar-nav>
+          <b-nav-item :to="{path: '/login'}">Login</b-nav-item>
+        </b-navbar-nav>
       </b-navbar-nav>
       <b-navbar-nav>
-        <a class="nav-item nav-link active" href="addmenu">Addmenu</a>
+        <b-nav-item :to="{path: '/addmenu'}">AddMenu</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav>
-        <a class="nav-item nav-link active" href="generator">Generator</a>
+        <b-nav-item :to="{path: '/generator'}">Generator</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

@@ -95,18 +95,24 @@ import { copyFile } from "fs";
 Vue.use(Vuelidate);
 var fs = require("fs");
 export default {
-  async mounted() {
-    const res = await this.$axios.$get("/api/register");
-    console.log(res);
-    this.response = res;
+  mounted() {
+    console.log(
+      this.$axios.$post("http://localhost:3000/result", { user: "phang" })
+    );
   },
+  // async mounted() {
+  //   const res = await this.$axios.$get("/api/register");
+  //   console.log(res);
+  //   this.response = res;
+  // },
   data() {
     return {
       username: "",
       password: "",
       conditionTerm: false,
       usernameJson: usernameJson,
-      response: []
+      response: [],
+      test: "pass"
     };
   },
   validations: {
@@ -131,12 +137,10 @@ export default {
           username: this.username,
           password: this.password
         });
-        console.log(
-          this.$axios.$post("/api/register", {
-            username: this.username,
-            password: this.password
-          })
-        );
+        this.$axios.$post("/api/register", {
+          username: this.username,
+          password: this.password
+        });
         this.$router.push({ name: "login" });
       }
     }

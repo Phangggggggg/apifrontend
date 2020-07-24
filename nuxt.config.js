@@ -51,6 +51,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
     "@nuxtjs/proxy",
+
     [
       "bootstrap-vue/nuxt",
       {
@@ -70,8 +71,10 @@ export default {
     "Access-Control-Allow-Headers":
       "X-Requested-With, content-type, Authorization"
   },
+
   proxy: {
-    "/api/": { target: "http://localhost:8080" }
+    "/api/": { target: "http://localhost:8080" },
+    "/api1/": { target: "http://localhost:3000" }
   },
   /*
    ** Build configuration

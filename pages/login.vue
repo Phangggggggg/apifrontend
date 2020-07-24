@@ -1,5 +1,9 @@
 <template>
   <div class="all">
+    <br />
+    <br />
+    <br />
+    <h4 id="warning-text">{{warningText}}</h4>
     <b-container class="container-fluid card-white">
       <br />
       <br />
@@ -65,7 +69,9 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      isAuthenticated: "",
+      warningText: ""
     };
   },
   validations: {
@@ -77,8 +83,22 @@ export default {
     }
   },
   methods: {
-    isValid() {
+    async isValid() {
       this.$v.$touch();
+      if (!this.$v.$invalid) {
+        let sendName = await this.$axios.$post("/api/login", {
+          username: this.username,
+          password: this.password
+        });
+        let resName = await this.$axios.$get("/api/login");
+        this.isAuthenticated = resName;
+        if (this.isAuthenticated == "Success") {
+          this.$router.push({ name: "generator" });
+        } else {
+          this.warningText =
+            "Username or password is wrong or you have not registered yet!";
+        }
+      }
     },
     readyToSubmit() {
       if (this.username != "" && this.password != "")
@@ -99,12 +119,18 @@ export default {
   border-radius: 10px;
 }
 .all {
-  height: 100vh;
-  background-color: #ffdae0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 400'%3E%3Cdefs%3E%3CradialGradient id='a' cx='396' cy='281' r='514' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23ffa8c8'/%3E%3Cstop offset='1' stop-color='%23ffdae0'/%3E%3C/radialGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='400' y1='148' x2='400' y2='333'%3E%3Cstop offset='0' stop-color='%23ff5781' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23ff5781' stop-opacity='0.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='800' height='400'/%3E%3Cg fill-opacity='0.29'%3E%3Ccircle fill='url(%23b)' cx='267.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='532.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='400' cy='30' r='300'/%3E%3C/g%3E%3C/svg%3E");
+  align-items: center;
+
+  background-color: #ffebf1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cdefs%3E%3Cfilter id='a' x='-200%25' y='-200%25' width='400%25' height='400%25'%3E%3CfeGaussianBlur in='SourceGraphic' stdDeviation='50'/%3E%3C/filter%3E%3C/defs%3E%3Cg fill='%23ff8ca3'%3E%3Cpolygon points='-203 1800 -203 -900 397 450'/%3E%3Cpolygon points='1803 -900 1803 1800 1203 450'/%3E%3C/g%3E%3Cg fill='%23fc6c85' filter='url(%23a)'%3E%3Cpolygon points='-203 1581 -203 -681 300 450'/%3E%3Cpolygon points='1803 -681 1803 1581 1300 450'/%3E%3C/g%3E%3Cg fill='%23ffaabe'%3E%3Cpolygon points='-203 1581 -203 -681 300 450'/%3E%3Cpolygon points='1803 -681 1803 1581 1300 450'/%3E%3C/g%3E%3Cg fill='%23ffc7d6'%3E%3Cpolygon points='-203 1356 -203 -456 200 450'/%3E%3Cpolygon points='1803 -456 1803 1356 1400 450'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: fixed;
   background-size: cover;
+  height: 100vh;
 }
+#warning-text {
+  color: crimson;
+}
+
 #heading {
   text-align: center;
   font-size: 60px;

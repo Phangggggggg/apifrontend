@@ -31,6 +31,8 @@
         class="mb-2 mr-sm-2 mb-sm-0"
         placeholder="Name of Menu"
       ></b-input>
+      <br />
+      <br />
       <b-button id="menu-button" variant="danger" @click="appendMenu()">Add menu</b-button>
     </div>
 
@@ -51,6 +53,8 @@
         placeholder="Add Ingredient"
       ></b-input>
     </b-input-group>
+    <br />
+    <br />
     <b-button
       v-if="items.length < 10"
       id="ingre-button"
@@ -58,6 +62,12 @@
       @click="appendIngredient()"
     >Add ingredient</b-button>
     <!-- </b-container> -->
+    <b-button
+      v-if="items.length >= 10 && menu.length != 0"
+      id="submit-button"
+      variant="success"
+      @click="submitMenuIngre()"
+    >Submit</b-button>
   </div>
 </template>
 
@@ -72,7 +82,8 @@ export default {
       afterText: "",
       allowIngre: false,
       allowDisplay: false,
-      showAddMenu: true
+      showAddMenu: true,
+      finalIngre: []
     };
   },
   // async asyncData({ $axios }) {
@@ -108,12 +119,22 @@ export default {
     },
     deleteIngredients(index) {
       this.items.splice(index, 1);
+    },
+    submitMenuIngre() {
+      for (var i = 0; i < this.items.length; i++) {
+        // console.log(this.items[i].Ingredients);
+        this.finalIngre.push(this.items[i].Ingredients);
+      }
+      this.$axios.$post("/api/addmenu", {
+        addedMenu: this.menu,
+        addedIngre: this.finalIngre
+      });
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
 .all {
   padding: 80px;
   text-align: center;

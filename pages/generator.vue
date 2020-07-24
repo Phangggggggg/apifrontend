@@ -3,7 +3,9 @@
     <h1 id="title-text">Generator</h1>
     <h3 class="header">Insert your ingredients here!</h3>
     <h4 id="repeated-text">{{ this.repeatedText }}</h4>
-    <h4 id="after-text" v-if="this.items.length == 5">You can add no more ingredients.</h4>
+    <h4 id="after-text" v-if="this.items.length == 5">
+      You can add no more ingredients.
+    </h4>
     <b-container class="my-3 white-card" fluid="md">
       <!-- <b-table striped hover :items="items" :fields="fields" style="center"></b-table> -->
       <table class="table">
@@ -13,11 +15,13 @@
             <th>Delete</th>
           </tr>
         </thead>
-        <tbody v-if="items && items.length > 0 ">
+        <tbody v-if="items && items.length > 0">
           <tr v-for="(item, index) in items" :key="index">
-            <td>{{item.Ingredients}}</td>
+            <td>{{ item.Ingredients }}</td>
             <td>
-              <b-button @click="deleteIngredients(index)" variant="danger">Delete</b-button>
+              <b-button @click="deleteIngredients(index)" variant="danger"
+                >Delete</b-button
+              >
             </td>
           </tr>
         </tbody>
@@ -32,19 +36,23 @@
           placeholder="Ingredients"
         ></b-input>
         <br />
-        <b-button id="add-button" variant="warning" @click="appendIngredients()">Add</b-button>
+        <b-button id="add-button" variant="warning" @click="appendIngredients()"
+          >Add</b-button
+        >
       </div>
       <b-button
-        v-if="items.length >= 5"
+        v-if="items.length >= 1"
         id="submit-button"
         variant="success"
         @click="submitMenuIngre()"
-      >Submit</b-button>
+        >Submit</b-button
+      >
     </b-container>
   </div>
 </template>
 
 <script>
+import nuxtStorage from "nuxt-storage";
 export default {
   data() {
     return {
@@ -53,11 +61,13 @@ export default {
       repeatedText: "",
       toBeAdded: "",
       allowDisplay: true,
-      finalIngre: []
+      finalIngre: [],
+      resultArr: []
     };
   },
   methods: {
     appendIngredients() {
+      console.log(nuxtStorage.get("username"));
       this.items.push({ Ingredients: this.toBeAdded });
       this.toBeAdded = "";
       if (this.items.length == 5) {
@@ -67,14 +77,17 @@ export default {
     deleteIngredients(index) {
       this.items.splice(index, 1);
     },
-    submitMenuIngre() {
+    async submitMenuIngre() {
       for (var i = 0; i < this.items.length; i++) {
         // console.log(this.items[i].Ingredients);
         this.finalIngre.push(this.items[i].Ingredients);
       }
-      this.$axios.$post("/api/addmenu", {
+      let sendIngre = await this.$axios.$post("/api/addmenu", {
         addedIngre: this.finalIngre
       });
+      let resultMenu = await this.$axios.$post("api/getMenu");
+      this.resultArr = resultMenu;
+      console.log(this.resultArr);
     }
   }
 };

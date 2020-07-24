@@ -3,7 +3,7 @@
     <br />
     <br />
     <br />
-    <h4 id="warning-text">{{warningText}}</h4>
+    <h4 id="warning-text">{{ warningText }}</h4>
     <b-container class="container-fluid card-white">
       <br />
       <br />
@@ -21,11 +21,15 @@
               v-model="username"
               @blur="readyToSubmit()"
             />
-            <small id="userHelp" class="form-text text-muted">Type your username to login</small>
+            <small id="userHelp" class="form-text text-muted"
+              >Type your username to login</small
+            >
             <div
               class="error"
               v-if="$v && $v.username.$dirty && !$v.username.required"
-            >Username is required</div>
+            >
+              Username is required
+            </div>
           </div>
           <div class="form-group col-md-12 text-left">
             <label for="Password">Password</label>
@@ -40,7 +44,9 @@
             <div
               class="error"
               v-if="$v && $v.password.$dirty && !$v.password.required"
-            >Password is required</div>
+            >
+              Password is required
+            </div>
           </div>
           <span id="submit-button">
             <button
@@ -48,7 +54,9 @@
               @click="isValid"
               class="btn btn-success m-2"
               type="button"
-            >Login</button>
+            >
+              Login
+            </button>
           </span>
         </form>
       </div>
@@ -60,12 +68,10 @@
 import Vue from "vue";
 import Vuelidate from "vuelidate";
 import { required } from "vuelidate/lib/validators";
+import nuxtStorage from "nuxt-storage";
 Vue.use(Vuelidate);
 
 export default {
-  mounted() {
-    console.log(this.$axios.$get("/api/xxx"));
-  },
   data() {
     return {
       username: "",
@@ -90,13 +96,12 @@ export default {
           username: this.username,
           password: this.password
         });
-        let resName = await this.$axios.$get("/api/login");
-        this.isAuthenticated = resName;
+        this.isAuthenticated = sendName;
         if (this.isAuthenticated == "Success") {
+          nuxtStorage.localStorage.setData("username", this.username);
           this.$router.push({ name: "generator" });
         } else {
-          this.warningText =
-            "Username or password is wrong or you have not registered yet!";
+          this.warningText = "Username or password is wrong !";
         }
       }
     },
@@ -129,6 +134,8 @@ export default {
 }
 #warning-text {
   color: crimson;
+  font-size: 20px;
+  text-align: center;
 }
 
 #heading {

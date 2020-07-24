@@ -13,11 +13,13 @@
           <th>Delete</th>
         </tr>
       </thead>
-      <tbody v-if="items && items.length > 0 ">
+      <tbody v-if="items && items.length > 0">
         <tr v-for="(item, index) in items" :key="index">
-          <td>{{item.Ingredients}}</td>
+          <td>{{ item.Ingredients }}</td>
           <td>
-            <b-button @click="deleteIngredients(index)" variant="danger">Delete</b-button>
+            <b-button @click="deleteIngredients(index)" variant="danger"
+              >Delete</b-button
+            >
           </td>
         </tr>
       </tbody>
@@ -33,7 +35,9 @@
       ></b-input>
       <br />
       <br />
-      <b-button id="menu-button" variant="danger" @click="appendMenu()">Add menu</b-button>
+      <b-button id="menu-button" variant="danger" @click="appendMenu()"
+        >Add menu</b-button
+      >
     </div>
 
     <br />
@@ -60,18 +64,21 @@
       id="ingre-button"
       variant="primary"
       @click="appendIngredient()"
-    >Add ingredient</b-button>
+      >Add ingredient</b-button
+    >
     <!-- </b-container> -->
     <b-button
-      v-if="items.length >= 10 && menu.length != 0"
+      v-if="this.items.length >= 1"
       id="submit-button"
       variant="success"
       @click="submitMenuIngre()"
-    >Submit</b-button>
+      >Submit</b-button
+    >
   </div>
 </template>
 
 <script>
+import swal from "sweetalert";
 export default {
   data() {
     return {
@@ -83,7 +90,9 @@ export default {
       allowIngre: false,
       allowDisplay: false,
       showAddMenu: true,
-      finalIngre: []
+      finalIngre: [],
+      finalMenu: [],
+      verdict: ""
     };
   },
   // async asyncData({ $axios }) {
@@ -94,6 +103,7 @@ export default {
   // },
   methods: {
     appendMenu() {
+      console.log(swal);
       if (this.menu) {
         this.showAddMenu = false;
         this.allowDisplay = true;
@@ -120,15 +130,25 @@ export default {
     deleteIngredients(index) {
       this.items.splice(index, 1);
     },
-    submitMenuIngre() {
+    async submitMenuIngre() {
+      this.finalMenu.push(this.menu);
       for (var i = 0; i < this.items.length; i++) {
         // console.log(this.items[i].Ingredients);
         this.finalIngre.push(this.items[i].Ingredients);
       }
-      this.$axios.$post("/api/addmenu", {
-        addedMenu: this.menu,
-        addedIngre: this.finalIngre
+      let res = await this.$axios.$post("/api/add", {
+        menuName: this.finalMenu,
+        ingLst: this.finalIngre
       });
+      this.verdict = res;
+      if (this.verdict == "add success") {
+        alert("Your menu is added succesfully !");
+      } else if (this.verdict == "menu already exist") {
+        alert("This menu is already added !");
+      } else {
+        alert("Something is wrong !");
+      }
+      location.reload();
     }
   }
 };

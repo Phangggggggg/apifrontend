@@ -5,10 +5,11 @@
         <b-col>
           <h1 class="title">
             Today's meal is
-            <span v-if="items.length > 0" style="color: #f6b511">
-              {{ this.items[0].menuName[0] }}</span
-            >
-            <span v-else style="color: #f6b511"> Nothing :(</span>
+            <span
+              v-if="items.length > 0"
+              style="color: #f6b511"
+            >{{ this.items[0].menuName[0] }}</span>
+            <span v-else style="color: #f6b511">Nothing :(</span>
           </h1>
         </b-col>
       </b-row>
@@ -21,7 +22,7 @@
       <br />
       <b-row>
         <b-col>
-          <table v-if="checkNoNull" id="table-result" class="table table-hover">
+          <table v-if="checkNoNull" id="table-result" class="table">
             <thead>
               <tr id="table-header">
                 <th>Menu</th>
@@ -31,9 +32,7 @@
             <tbody id="table-body" v-if="items && items.length > 0">
               <tr v-for="(item, index) in items" :key="index">
                 <td>{{ item.menuName[0] }}</td>
-                <td>
-                  {{ item.ingLst }}
-                </td>
+                <td>{{ item.ingLst }}</td>
               </tr>
             </tbody>
           </table>
@@ -102,14 +101,15 @@ export default {
 }
 #table-header {
   font-size: 25px;
-  font-weight: bold;
+  font-weight: bolder;
   font-family: "Roboto Slab", serif;
+  background: #f7b34d;
+  opacity: 0.95;
 }
 #table-body {
   font-size: 20px;
   font-weight: normal;
-}
-#result-table {
-  opacity: 0.5 !important;
+  opacity: 0.95;
+  background: #fac472;
 }
 </style>

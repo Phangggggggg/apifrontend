@@ -3,7 +3,9 @@
     <h1 id="title-text">Generator</h1>
     <h3 class="header">Insert your ingredients here!</h3>
     <h4 id="repeated-text">{{ this.repeatedText }}</h4>
-    <h4 id="after-text" v-if="this.items.length == 5">You can add no more ingredients.</h4>
+    <h4 id="after-text" v-if="this.items.length == 5">
+      You can add no more ingredients.
+    </h4>
     <b-container class="my-3" fluid="md">
       <b-row>
         <b-col md="12">
@@ -26,7 +28,8 @@
                 id="add-button"
                 class="mb-2 mr-sm-2 mb-sm-0 col-1 btn btn-warning"
                 @click="appendIngredients()"
-              >Add</b-button>
+                >Add</b-button
+              >
             </b-input-group>
           </div>
         </b-col>
@@ -43,7 +46,9 @@
               <tr v-for="(item, index) in items" :key="index">
                 <td>{{ item.Ingredients }}</td>
                 <td>
-                  <b-button @click="deleteIngredients(index)" variant="danger">Delete</b-button>
+                  <b-button @click="deleteIngredients(index)" variant="danger"
+                    >Delete</b-button
+                  >
                 </td>
               </tr>
             </tbody>
@@ -54,7 +59,8 @@
             id="submit-button"
             variant="success"
             @click="submitIngre()"
-          >Submit</b-button>
+            >Submit</b-button
+          >
         </b-col>
       </b-row>
     </b-container>
@@ -96,7 +102,7 @@ export default {
         generatorIngre: this.finalIngre
       });
       this.resultArr = sendIngre;
-      nuxtStorage.localStorage.setData("result", this.resultArr);
+      nuxtStorage.localStorage.setData("result", this.resultArr, 1, "d");
       this.$router.push({ name: "result" });
     }
   }

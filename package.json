@@ -19,6 +19,7 @@
     "nuxt-storage": "^1.2.2",
     "sweetalert": "^2.1.2",
     "vue-lottie": "^0.2.1",
+    "vue-table-dynamic": "^0.2.6",
     "vuelidate": "^0.7.5"
   },
   "devDependencies": {

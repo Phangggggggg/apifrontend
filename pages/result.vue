@@ -5,7 +5,10 @@
         <b-col>
           <h1 class="title">
             Today's meal is
-            <span style="color: #f6b511">{{ menu }}</span>
+            <span v-if="items.length > 0" style="color: #f6b511">
+              {{ this.items[0].menuName[0] }}</span
+            >
+            <span v-else style="color: #f6b511"> Nothing :(</span>
           </h1>
         </b-col>
       </b-row>
@@ -14,19 +17,23 @@
           <h4 class="at-foodie">@Foodie Generator</h4>
         </b-col>
       </b-row>
+      <br />
+      <br />
       <b-row>
         <b-col>
-          <table class="table table-warning mt-3">
+          <table v-if="checkNoNull" id="table-result" class="table table-hover">
             <thead>
-              <tr>
+              <tr id="table-header">
                 <th>Menu</th>
                 <th>Ingredients</th>
               </tr>
             </thead>
-            <tbody v-if="items && items.length > 0">
+            <tbody id="table-body" v-if="items && items.length > 0">
               <tr v-for="(item, index) in items" :key="index">
                 <td>{{ item.menuName[0] }}</td>
-                <td id="loop" v-for="(ingre,i) in item.ingLst" :key="i">{{item.ingLst[i] }}</td>
+                <td>
+                  {{ item.ingLst }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -41,22 +48,35 @@ import nuxtStorage from "nuxt-storage";
 
 export default {
   asyncData() {
-    const resultArr = nuxtStorage.localStorage.getData("result");
+    let resultArr = nuxtStorage.localStorage.getData("result");
+    for (let i = 0; i < resultArr.length; i++) {
+      let res = resultArr[i].ingLst[0];
+      console.log(res);
+      for (let idx = 1; idx < resultArr[i].ingLst.length; idx++) {
+        console.log(1);
+        let str1 = ",";
+        let str2 = resultArr[i].ingLst[idx];
+        let final = str1.concat(str2);
+        res = res.concat(final);
+      }
+      resultArr[i].ingLst = res;
+    }
     return { items: resultArr };
   },
   data() {
-    return {};
+    return {
+      menus: [],
+      ingredient: [],
+      checkNoNull: true
+    };
   },
-  created() {
-    console.log(document.getElementById("loop").innerHTML);
-  },
+
   methods: {}
 };
 </script>
 
-
-
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Roboto+Slab:wght@600&family=Staatliches&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Staatliches&display=swap");
 .all {
   padding: 35px;
@@ -72,12 +92,24 @@ export default {
 }
 .title {
   font-family: "Staatliches", cursive;
-  font-size: 100px;
+  font-size: 90px;
   color: rgba(255, 255, 255, 0.911);
 }
 .at-foodie {
   text-align: center;
   font-size: 20px;
   color: rgba(255, 255, 255, 0.911);
+}
+#table-header {
+  font-size: 25px;
+  font-weight: bold;
+  font-family: "Roboto Slab", serif;
+}
+#table-body {
+  font-size: 20px;
+  font-weight: normal;
+}
+#result-table {
+  opacity: 0.5 !important;
 }
 </style>

@@ -1,85 +1,91 @@
 <template>
   <div class="all">
-    <!-- <b-container> -->
-    <h1 class="header" v-if="this.allowDisplay">Your menu is {{ menu }}</h1>
-    <h1 class="header" v-else>Your menu is</h1>
-    <br />
     <span class="after-text">{{ afterText }}</span>
+    <h1 class="header" v-if="this.allowDisplay">
+      Your menu is
+      <span style="color: rgb(255, 237, 138)">{{ menu }}</span>
+    </h1>
+    <h1 class="header" v-else>Your menu is</h1>
+    <b-container>
+      <b-row>
+        <b-col>
+          <span id="menu-form" v-if="showAddMenu">
+            <label class="sr-only" for="input-menu">Add Menu</label>
+            <b-input-group prepend="Menu" id="pre-menu" class="mb-2 mr-sm-2 mb-sm-0 col-12">
+              <b-input
+                v-model="menu"
+                @keyup.enter="appendMenu()"
+                id="input-menu"
+                class="mb-2 mr-sm-2 mb-sm-0"
+                placeholder="Name of Menu"
+              ></b-input>
+              <b-button id="menu-button" variant="warning" @click="appendMenu()">Add menu</b-button>
+            </b-input-group>
+          </span>
+        </b-col>
+        <b-col>
+          <label class="sr-only" for="input-ingredient">Add Ingredient</label>
+          <b-input-group
+            v-if="items.length < 5"
+            prepend="Ingredient"
+            id="pre-ingre"
+            class="mb-2 mr-sm-2 mb-sm-0 col-12"
+          >
+            <b-input
+              v-model="toBeAdded"
+              :disabled="allowIngre == false"
+              @keyup.enter="appendIngredient()"
+              id="input-ingredient"
+              placeholder="Add Ingredient"
+            ></b-input>
+            <b-button
+              v-if="items.length < 5"
+              id="ingre-button"
+              variant="primary"
+              @click="appendIngredient()"
+            >Add ingredient</b-button>
+          </b-input-group>
+        </b-col>
+      </b-row>
+    </b-container>
     <!-- <b-table :items="items" :fields="fields" caption-top></b-table> -->
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Ingredients</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody v-if="items && items.length > 0">
-        <tr v-for="(item, index) in items" :key="index">
-          <td>{{ item.Ingredients }}</td>
-          <td>
-            <b-button @click="deleteIngredients(index)" variant="danger"
-              >Delete</b-button
-            >
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div v-if="showAddMenu">
-      <label class="sr-only" for="input-menu">Add Menu</label>
-      <b-input
-        v-model="menu"
-        @keyup.enter="appendMenu()"
-        id="input-menu"
-        class="mb-2 mr-sm-2 mb-sm-0"
-        placeholder="Name of Menu"
-      ></b-input>
-      <br />
-      <br />
-      <b-button id="menu-button" variant="danger" @click="appendMenu()"
-        >Add menu</b-button
-      >
-    </div>
-
-    <br />
-    <br />
-    <label class="sr-only" for="input-ingredient">Add Ingredient</label>
-    <b-input-group
-      v-if="items.length < 10"
-      prepend="Ingredient"
-      id="pre-ingre"
-      class="mb-2 mr-sm-2 mb-sm-0"
-    >
-      <b-input
-        v-model="toBeAdded"
-        :disabled="allowIngre == false"
-        @keyup.enter="appendIngredient()"
-        id="input-ingredient"
-        placeholder="Add Ingredient"
-      ></b-input>
-    </b-input-group>
-    <br />
-    <br />
-    <b-button
-      v-if="items.length < 10"
-      id="ingre-button"
-      variant="primary"
-      @click="appendIngredient()"
-      >Add ingredient</b-button
-    >
-    <!-- </b-container> -->
-    <b-button
-      v-if="this.items.length >= 1"
-      id="submit-button"
-      variant="success"
-      @click="submitMenuIngre()"
-      >Submit</b-button
-    >
+    <b-container class="my-3" fluid="md">
+      <b-row>
+        <b-col md="12">
+          <table class="table table-bordered table-warning mt-3">
+            <thead>
+              <tr>
+                <th>Ingredients</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody v-if="items && items.length > 0">
+              <tr v-for="(item, index) in items" :key="index">
+                <td>{{ item.Ingredients }}</td>
+                <td>
+                  <b-button @click="deleteIngredients(index)" variant="danger">Delete</b-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </b-col>
+        <b-col md="12">
+          <b-button
+            v-if="this.items.length >= 1"
+            id="submit-button"
+            variant="success"
+            @click="submitMenuIngre()"
+          >Submit</b-button>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
 <script>
 import swal from "sweetalert";
 export default {
+  middleware: ["authentication"],
   data() {
     return {
       fields: ["Ingredients"],
@@ -114,7 +120,7 @@ export default {
     },
     appendIngredient() {
       this.afterText = "";
-      if (this.items.length == 10) {
+      if (this.items.length == 5) {
         this.afterText = "You can not add more ingredients";
       } else {
         if (
@@ -155,13 +161,30 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Staatliches&display=swap");
 .all {
-  padding: 80px;
+  padding: 35px;
   text-align: center;
   justify-content: center;
   align-items: center;
+  background-color: #fac472;
+  background-image: url("../assets/svg/SVG/red-bg.svg");
+  background-attachment: fixed;
+  background-size: cover;
+  height: 100vh;
+  opacity: 0.94;
 }
 .after-text {
-  color: crimson;
+  color: white;
+  font-size: 20px;
+}
+.header {
+  font-family: "Staatliches", cursive;
+  color: whitesmoke;
+  font-size: 100px;
+}
+#menu-form {
+  padding-right: 700px;
+  padding-top: 50px;
 }
 </style>

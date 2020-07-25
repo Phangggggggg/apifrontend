@@ -44,6 +44,10 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [],
+  /*router: {
+    base: "/",
+    middleware: ["authentication"]
+  },*/
   /*
    ** Nuxt.js modules
    */

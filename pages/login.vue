@@ -21,15 +21,11 @@
               v-model="username"
               @blur="readyToSubmit()"
             />
-            <small id="userHelp" class="form-text text-muted"
-              >Type your username to login</small
-            >
+            <small id="userHelp" class="form-text text-muted">Type your username to login</small>
             <div
               class="error"
               v-if="$v && $v.username.$dirty && !$v.username.required"
-            >
-              Username is required
-            </div>
+            >Username is required</div>
           </div>
           <div class="form-group col-md-12 text-left">
             <label for="Password">Password</label>
@@ -44,20 +40,11 @@
             <div
               class="error"
               v-if="$v && $v.password.$dirty && !$v.password.required"
-            >
-              Password is required
-            </div>
+            >Password is required</div>
           </div>
-          <span id="submit-button">
-            <button
-              ref="submit-button"
-              @click="isValid"
-              class="btn btn-success m-2"
-              type="button"
-            >
-              Login
-            </button>
-          </span>
+          <div class="form-group col-md-12 text-center">
+            <button ref="submit-button" @click="isValid" class="btn btn-success" type="button">Login</button>
+          </div>
         </form>
       </div>
     </b-container>
@@ -72,6 +59,14 @@ import nuxtStorage from "nuxt-storage";
 Vue.use(Vuelidate);
 
 export default {
+  asyncData({ redirect }) {
+    if (nuxtStorage.localStorage.getData("username") != null) {
+      console.log(nuxtStorage.localStorage.getData("username"));
+      alert("You already logged in");
+      //this.$router.replace({ path: "generator" });
+      return redirect("/generator");
+    }
+  },
   data() {
     return {
       username: "",
@@ -98,7 +93,7 @@ export default {
         });
         this.isAuthenticated = sendName;
         if (this.isAuthenticated == "Success") {
-          nuxtStorage.localStorage.setData("username", this.username);
+          nuxtStorage.localStorage.setData("username", this.username, 1, "d");
           this.$router.push({ name: "generator" });
         } else {
           this.warningText = "Username or password is wrong !";

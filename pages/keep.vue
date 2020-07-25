@@ -14,41 +14,17 @@
           <h4 class="at-foodie">@Foodie Generator</h4>
         </b-col>
       </b-row>
-      <b-row>
-        <b-col>
-          <table class="table table-warning mt-3">
-            <thead>
-              <tr>
-                <th>Menu</th>
-                <th>Ingredients</th>
-              </tr>
-            </thead>
-            <tbody v-if="items && items.length > 0">
-              <tr v-for="(item, index) in items" :key="index">
-                <td>{{ item.menuName[0] }}</td>
-                <td id="loop" v-for="(ingre,i) in item.ingLst" :key="i">{{item.ingLst[i] }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </b-col>
-      </b-row>
     </b-container>
   </div>
 </template>
 
 <script>
-import nuxtStorage from "nuxt-storage";
-
 export default {
-  asyncData() {
-    const resultArr = nuxtStorage.localStorage.getData("result");
-    return { items: resultArr };
-  },
   data() {
-    return {};
-  },
-  created() {
-    console.log(document.getElementById("loop").innerHTML);
+    return {
+      menu: "yum",
+      ingredients: []
+    };
   },
   methods: {}
 };

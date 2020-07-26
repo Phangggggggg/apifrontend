@@ -1,7 +1,7 @@
 <template>
   <div class="all">
     <span class="after-text">{{ afterText }}</span>
-    <span v-if="items.length == 5" class="sub-text">No more ingredients can be added</span>
+    <span v-if="items.length == 10" class="sub-text">No more ingredients can be added</span>
 
     <h1 class="header" v-if="this.allowDisplay">
       Your menu is
@@ -25,7 +25,7 @@
             </b-input-group>
           </span>
         </b-col>
-        <b-col lg="6" md="12" v-if="items.length < 5">
+        <b-col lg="6" md="12" v-if="items.length < 10">
           <label class="sr-only" for="input-ingredient">Add Ingredient</label>
           <b-input-group
             :disabled="allowIngre == false"
@@ -41,7 +41,7 @@
               class="mr-2"
             ></b-input>
             <b-button
-              v-if="items.length < 5"
+              v-if="items.length < 10"
               id="ingre-button"
               variant="primary"
               :disabled="toBeAdded.length == 0"
@@ -122,7 +122,7 @@ export default {
     },
     appendIngredient() {
       this.afterText = "";
-      if (this.items.length == 5) {
+      if (this.items.length == 10) {
         this.submitText = "You can not add more ingredients";
       } else if (this.toBeAdded) {
         if (

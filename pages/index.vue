@@ -61,7 +61,7 @@ export default {
 .quote-container {
   border-radius: 20px;
   text-align: center;
-  padding-top: 400px;
+  padding-top: 380px;
 }
 #button {
   font-size: 60px;

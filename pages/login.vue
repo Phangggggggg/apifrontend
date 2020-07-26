@@ -94,7 +94,8 @@ export default {
         this.isAuthenticated = sendName;
         if (this.isAuthenticated == "Success") {
           nuxtStorage.localStorage.setData("username", this.username, 1, "d");
-          this.$router.push({ name: "generator" });
+          //this.$router.push({ name: "generator" });
+          window.location.href = "/generator";
         } else {
           this.warningText = "Username or password is wrong !";
         }

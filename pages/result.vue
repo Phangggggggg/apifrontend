@@ -77,6 +77,7 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Roboto+Slab:wght@600&family=Staatliches&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Staatliches&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
 .all {
   padding: 35px;
   text-align: center;
@@ -86,7 +87,8 @@ export default {
   background-image: url("../assets/svg/SVG/Asset 14.svg");
   background-attachment: fixed;
   background-size: cover;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   opacity: 0.94;
 }
 .title {
@@ -97,7 +99,7 @@ export default {
 .at-foodie {
   text-align: center;
   font-size: 20px;
-  color: rgba(255, 255, 255, 0.911);
+  color: rgba(248, 225, 186, 0.911);
 }
 #table-header {
   font-size: 25px;

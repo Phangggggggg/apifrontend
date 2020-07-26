@@ -7,41 +7,38 @@
     </h1>
     <h1 class="header" v-else>Your menu is</h1>
     <b-container>
-      <b-row>
-        <b-col>
-          <span id="menu-form" v-if="showAddMenu">
+      <b-row :class="[!showAddMenu ? 'd-flex justify-content-center' : '']">
+        <b-col v-if="showAddMenu" lg="6" md="12">
+          <span id="menu-form">
             <label class="sr-only" for="input-menu">Add Menu</label>
-            <b-input-group prepend="Menu" id="pre-menu" class="mb-2 mr-sm-2 mb-sm-0 col-12">
+            <b-input-group prepend="Menu" id="pre-menu" class="mr-2 col-12">
               <b-input
                 v-model="menu"
                 @keyup.enter="appendMenu()"
                 id="input-menu"
-                class="mb-2 mr-sm-2 mb-sm-0"
+                class="mr-2"
                 placeholder="Name of Menu"
               ></b-input>
               <b-button id="menu-button" variant="warning" @click="appendMenu()">Add menu</b-button>
             </b-input-group>
           </span>
         </b-col>
-        <b-col>
+        <b-col lg="6" md="12">
           <label class="sr-only" for="input-ingredient">Add Ingredient</label>
-          <b-input-group
-            v-if="items.length < 5"
-            prepend="Ingredient"
-            id="pre-ingre"
-            class="mb-2 mr-sm-2 mb-sm-0 col-12"
-          >
+          <b-input-group prepend="Ingredient" id="pre-ingre" class="mb-2 mb-sm-0 col-12">
             <b-input
               v-model="toBeAdded"
               :disabled="allowIngre == false"
               @keyup.enter="appendIngredient()"
               id="input-ingredient"
               placeholder="Add Ingredient"
+              class="mr-2"
             ></b-input>
             <b-button
               v-if="items.length < 5"
               id="ingre-button"
               variant="primary"
+              :disabled="toBeAdded.length == 0"
               @click="appendIngredient()"
             >Add ingredient</b-button>
           </b-input-group>
@@ -54,12 +51,12 @@
         <b-col md="12">
           <table class="table table-bordered table-warning mt-3">
             <thead>
-              <tr>
+              <tr class="table-header">
                 <th>Ingredients</th>
                 <th>Delete</th>
               </tr>
             </thead>
-            <tbody v-if="items && items.length > 0">
+            <tbody class="table-body" v-if="items && items.length > 0">
               <tr v-for="(item, index) in items" :key="index">
                 <td>{{ item.Ingredients }}</td>
                 <td>
@@ -122,7 +119,7 @@ export default {
       this.afterText = "";
       if (this.items.length == 5) {
         this.afterText = "You can not add more ingredients";
-      } else {
+      } else if (this.toBeAdded) {
         if (
           this.items.findIndex(item => item.Ingredients == this.toBeAdded) == -1
         ) {
@@ -130,8 +127,8 @@ export default {
         } else {
           this.afterText = "This ingredient is already added";
         }
+        this.toBeAdded = "";
       }
-      this.toBeAdded = "";
     },
     deleteIngredients(index) {
       this.items.splice(index, 1);
@@ -161,6 +158,7 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Staatliches&display=swap");
 .all {
   padding: 35px;
@@ -171,7 +169,8 @@ export default {
   background-image: url("../assets/svg/SVG/red-bg.svg");
   background-attachment: fixed;
   background-size: cover;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   opacity: 0.94;
 }
 .after-text {
@@ -186,5 +185,15 @@ export default {
 #menu-form {
   padding-right: 700px;
   padding-top: 50px;
+}
+.table-header {
+  font-family: "Righteous", cursive;
+  font-size: 26px;
+  text-transform: uppercase;
+  color: #691006;
+}
+.table-body {
+  font-size: 20px;
+  text-transform: uppercase;
 }
 </style>

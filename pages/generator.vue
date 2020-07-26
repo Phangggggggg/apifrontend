@@ -3,52 +3,50 @@
     <h1 id="title-text">Generator</h1>
     <h3 class="header">Insert your ingredients here!</h3>
     <h4 id="repeated-text">{{ this.repeatedText }}</h4>
-    <h4 id="after-text" v-if="this.items.length == 5">
-      You can add no more ingredients.
-    </h4>
+    <h4 id="after-text" v-if="this.items.length == 5">No more ingredients can be added</h4>
     <b-container class="my-3" fluid="md">
-      <b-row>
-        <b-col md="12">
+      <b-row class="d-flex justify-content-center">
+        <b-col xs="12" md="8">
           <div v-if="items.length < 5" id="ingredients-form" inline>
             <label class="sr-only" for="ingredients">Ingredients</label>
             <b-input-group
               v-if="items.length < 10"
               prepend="Ingredient"
               id="pre-ingre"
-              class="mb-2 mr-sm-2 mb-sm-0"
+              class="mr-2"
             >
               <b-input
                 v-model="toBeAdded"
                 id="ingredients"
-                class="mb-2 mb-2 mr-sm-2 mb-sm-0 col-8"
+                class="mr-2"
                 @keyup.enter="appendIngredients()"
                 placeholder="Ingredients"
               ></b-input>
               <b-button
+                :disabled="!toBeAdded"
                 id="add-button"
-                class="mb-2 mr-sm-2 mb-sm-0 col-1 btn btn-warning"
+                class="mr-2 btn btn-warning"
                 @click="appendIngredients()"
-                >Add</b-button
-              >
+              >Add</b-button>
             </b-input-group>
           </div>
         </b-col>
+      </b-row>
+      <b-row>
         <b-col md="12">
           <!-- <b-table striped hover :items="items" :fields="fields" style="center"></b-table> -->
           <table class="table table-bordered table-warning mt-3">
-            <thead>
+            <thead id="table-head">
               <tr>
                 <th>Ingredients</th>
                 <th>Delete</th>
               </tr>
             </thead>
-            <tbody v-if="items && items.length > 0">
+            <tbody id="table-body" v-if="items && items.length > 0">
               <tr v-for="(item, index) in items" :key="index">
                 <td>{{ item.Ingredients }}</td>
                 <td>
-                  <b-button @click="deleteIngredients(index)" variant="danger"
-                    >Delete</b-button
-                  >
+                  <b-button @click="deleteIngredients(index)" variant="danger">Delete</b-button>
                 </td>
               </tr>
             </tbody>
@@ -59,8 +57,7 @@
             id="submit-button"
             variant="success"
             @click="submitIngre()"
-            >Submit</b-button
-          >
+          >Submit</b-button>
         </b-col>
       </b-row>
     </b-container>
@@ -84,9 +81,10 @@ export default {
   },
   methods: {
     appendIngredients() {
-      // console.log(nuxtStorage.localStorage.getData("username"));
-      this.items.push({ Ingredients: this.toBeAdded });
-      this.toBeAdded = "";
+      if (this.toBeAdded) {
+        this.items.push({ Ingredients: this.toBeAdded });
+        this.toBeAdded = "";
+      }
       if (this.items.length == 5) {
         this.allowDisplay = false;
       }
@@ -118,10 +116,11 @@ export default {
 .header {
   text-align: center;
   padding: 30px;
+  color: brown;
 }
 #after-text {
   text-align: center;
-  color: firebrick;
+  color: rgb(223, 25, 25);
 }
 .white-card {
   position: relative;
@@ -132,18 +131,19 @@ export default {
   border-radius: 10px;
 }
 .all {
-  height: 100vh;
   background-color: #fac472;
   background-image: url("../assets/svg/SVG/Asset 10.svg");
   background-attachment: fixed;
   background-size: cover;
-  opacity: 0.92;
+  opacity: 0.9;
+  min-height: 100vh;
+  height: auto;
 }
 #title-text {
   font-family: "Lobster", cursive;
   padding-top: 20px;
   text-align: center;
-  font-size: 100px;
+  font-size: 110px;
   letter-spacing: 5px;
 }
 #add-button {
@@ -153,5 +153,11 @@ export default {
 }
 .table {
   padding-top: 40px;
+}
+#table-head {
+  font-size: 20px;
+}
+#table-body {
+  font-size: 18px;
 }
 </style>

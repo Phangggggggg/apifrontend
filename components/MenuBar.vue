@@ -28,6 +28,7 @@
       </b-navbar-nav>
     </b-collapse>
     <button
+      v-if="checkLogin"
       @click="doLogout"
       id="logout-button"
       class="btn btn-outline-danger my-2 my-sm-0"
@@ -39,10 +40,10 @@
 import nuxtStorage from "nuxt-storage";
 
 export default {
-  beforeCreate() {
+  created() {
     if (nuxtStorage.localStorage.getData("username") != null) {
       this.checkLogin = true;
-      console.log(this.checkLogin);
+      console.log("login header =>", this.checkLogin);
     }
   },
   data() {
@@ -55,6 +56,7 @@ export default {
       if (nuxtStorage.localStorage.getData("username") != null) {
         nuxtStorage.localStorage.clear();
         alert("Log out succesfully");
+        this.checkLogin = false;
         this.$router.push({ name: "index" });
       } else {
         alert("You are not log in yet");

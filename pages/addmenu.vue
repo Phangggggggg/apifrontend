@@ -1,6 +1,8 @@
 <template>
   <div class="all">
     <span class="after-text">{{ afterText }}</span>
+    <span v-if="items.length == 5" class="sub-text">No more ingredients can be added</span>
+
     <h1 class="header" v-if="this.allowDisplay">
       Your menu is
       <span style="color: rgb(255, 237, 138)">{{ menu }}</span>
@@ -23,12 +25,16 @@
             </b-input-group>
           </span>
         </b-col>
-        <b-col lg="6" md="12">
+        <b-col lg="6" md="12" v-if="items.length < 5">
           <label class="sr-only" for="input-ingredient">Add Ingredient</label>
-          <b-input-group prepend="Ingredient" id="pre-ingre" class="mb-2 mb-sm-0 col-12">
+          <b-input-group
+            :disabled="allowIngre == false"
+            prepend="Ingredient"
+            id="pre-ingre"
+            class="mb-2 mb-sm-0 col-12"
+          >
             <b-input
               v-model="toBeAdded"
-              :disabled="allowIngre == false"
               @keyup.enter="appendIngredient()"
               id="input-ingredient"
               placeholder="Add Ingredient"
@@ -80,7 +86,6 @@
 </template>
 
 <script>
-import swal from "sweetalert";
 export default {
   middleware: ["authentication"],
   data() {
@@ -95,7 +100,8 @@ export default {
       showAddMenu: true,
       finalIngre: [],
       finalMenu: [],
-      verdict: ""
+      verdict: "",
+      submitText: ""
     };
   },
   // async asyncData({ $axios }) {
@@ -106,7 +112,6 @@ export default {
   // },
   methods: {
     appendMenu() {
-      console.log(swal);
       if (this.menu) {
         this.showAddMenu = false;
         this.allowDisplay = true;
@@ -118,7 +123,7 @@ export default {
     appendIngredient() {
       this.afterText = "";
       if (this.items.length == 5) {
-        this.afterText = "You can not add more ingredients";
+        this.submitText = "You can not add more ingredients";
       } else if (this.toBeAdded) {
         if (
           this.items.findIndex(item => item.Ingredients == this.toBeAdded) == -1
@@ -195,5 +200,9 @@ export default {
 .table-body {
   font-size: 20px;
   text-transform: uppercase;
+}
+.sub-text {
+  color: rgb(240, 191, 191);
+  font-size: 20px;
 }
 </style>

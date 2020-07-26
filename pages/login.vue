@@ -61,7 +61,7 @@ Vue.use(Vuelidate);
 export default {
   asyncData({ redirect }) {
     if (nuxtStorage.localStorage.getData("username") != null) {
-      console.log(nuxtStorage.localStorage.getData("username"));
+      // console.log(nuxtStorage.localStorage.getData("username"));
       alert("You already logged in");
       //this.$router.replace({ path: "generator" });
       return redirect("/generator");

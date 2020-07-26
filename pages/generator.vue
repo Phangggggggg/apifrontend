@@ -2,7 +2,7 @@
   <div class="all">
     <h1 id="title-text">Generator</h1>
     <h3 class="header">Insert your ingredients here!</h3>
-    <h4 id="repeated-text">{{ this.repeatedText }}</h4>
+    <h4 id="repeated-text" v-if="allowRepeat">{{ this.repeatedText }}</h4>
     <h4 id="after-text" v-if="this.items.length == 5">No more ingredients can be added</h4>
     <b-container class="my-3" fluid="md">
       <b-row class="d-flex justify-content-center">
@@ -76,15 +76,25 @@ export default {
       toBeAdded: "",
       allowDisplay: true,
       finalIngre: [],
-      resultArr: []
+      resultArr: [],
+      allowRepeat: false
     };
   },
   methods: {
     appendIngredients() {
+      this.allowRepeat = false;
       if (this.toBeAdded) {
-        this.items.push({ Ingredients: this.toBeAdded });
+        if (
+          this.items.findIndex(item => item.Ingredients == this.toBeAdded) == -1
+        ) {
+          this.items.push({ Ingredients: this.toBeAdded });
+        } else {
+          this.repeatedText = "This ingredient is already added";
+          this.allowRepeat = true;
+        }
         this.toBeAdded = "";
       }
+
       if (this.items.length == 5) {
         this.allowDisplay = false;
       }

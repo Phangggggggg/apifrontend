@@ -103,11 +103,6 @@ import { copyFile } from "fs";
 Vue.use(Vuelidate);
 var fs = require("fs");
 export default {
-  mounted() {
-    console.log(
-      this.$axios.$post("http://localhost:3000/result", { user: "phang" })
-    );
-  },
   // async mounted() {
   //   const res = await this.$axios.$get("/api/register");
   //   console.log(res);

@@ -77,7 +77,7 @@ export default {
   },
 
   proxy: {
-    "/api/": { target: "http://localhost:8080" }
+    "/api/": { target: " http://188.166.244.157:8080" }
   },
   /*
    ** Build configuration

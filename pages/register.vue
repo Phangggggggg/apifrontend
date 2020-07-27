@@ -95,7 +95,6 @@
   </div>
 </template>
 <script>
-let usernameJson = require("~/assets/database/username.json");
 import Vue from "vue";
 import Vuelidate from "vuelidate";
 import { required } from "vuelidate/lib/validators";
@@ -113,7 +112,6 @@ export default {
       username: "",
       password: "",
       conditionTerm: false,
-      usernameJson: usernameJson,
       response: [],
       test: "pass"
     };
@@ -136,10 +134,6 @@ export default {
     doSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        this.usernameJson.push({
-          username: this.username,
-          password: this.password
-        });
         this.$axios.$post("/api/register", {
           username: this.username,
           password: this.password

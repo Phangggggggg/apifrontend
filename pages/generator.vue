@@ -106,9 +106,11 @@ export default {
       for (var i = 0; i < this.items.length; i++) {
         this.finalIngre.push(this.items[i].Ingredients);
       }
+      console.log(this.finalIngre);
       let sendIngre = await this.$axios.$post("/api/getMenu", {
         generatorIngre: this.finalIngre
       });
+
       this.resultArr = sendIngre;
       nuxtStorage.localStorage.setData("result", this.resultArr, 1, "d");
       this.$router.push({ name: "result" });
